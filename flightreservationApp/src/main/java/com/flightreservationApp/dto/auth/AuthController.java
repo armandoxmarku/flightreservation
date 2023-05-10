@@ -1,4 +1,4 @@
-package com.flightreservationApp.controller;
+package com.flightreservationApp.dto.auth;
 
 import com.flightreservationApp.dto.auth.AuthRequest;
 import com.flightreservationApp.dto.auth.TokenDTO;
@@ -6,6 +6,7 @@ import com.flightreservationApp.dto.user.UserDTO;
 import com.flightreservationApp.entity.User;
 import com.flightreservationApp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,15 +30,17 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(path = "/auth")
-@RequiredArgsConstructor
+@RequestMapping(path ="/auth")
 @Validated
-public class Authcontroller {
+public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtEncoder jwtEncoder;
-    private final UserService userService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private JwtEncoder jwtEncoder;
+    @Autowired
+    private UserService userService;
     @PostMapping("/login")
     public ResponseEntity<TokenDTO> login(@RequestBody @Valid AuthRequest request) {
         try {
@@ -48,7 +51,7 @@ public class Authcontroller {
             User user = (User) authentication.getPrincipal();
 
             Instant now = Instant.now();
-            Long expiry = 360000L;
+            Long expiry = 3600L;
 
             String scope =
                     authentication.getAuthorities().stream()
@@ -60,16 +63,15 @@ public class Authcontroller {
                             .issuer("ikubinfo.al")
                             .issuedAt(now)
                             .expiresAt(now.plusSeconds(expiry))
-                            .subject(user.getUsername())
+                            .subject(String.format("%s,%s", user.getId(), user.getUsername()))
                             .claim("roles", scope)
-                            .audience(Arrays.asList("Audienca"))
                             .build();
 
             String token = this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer ".concat(token))
-                    .body(new TokenDTO("Bearer ".concat(token)));
+                    .header(HttpHeaders.AUTHORIZATION, token)
+                    .body(new TokenDTO(token));
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

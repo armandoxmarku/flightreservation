@@ -4,23 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthRequest {
-    //@NotEmpty(message = "Username is required")
-    private String username;
-    //@NotEmpty(message = "Create a password")
-    private String password;
-    // @NotEmpty(message = "Name is required")
-    private String firstname;
-    // @NotEmpty(message = "Lastname is required")
-    private String lastname;
-    //@NotEmpty(message = "email is required")
+    @NotNull
+    @Email
     private String email;
-   // @NotEmpty(message = "Select role")
-    private String role;
+    @NotNull
+    private String password;
 
 }
