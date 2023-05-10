@@ -30,7 +30,7 @@ public class PassengerServiceImpl implements PassengerService {
     public Passenger findById(Integer id) {
         return passengerRepository.findById(id)
                 .orElseThrow(()->new ResourceNotFountException(String
-                        .format("User with id%s not found" , id)));
+                        .format("passenger with id%s not found" , id)));
     }
 
     @Override

@@ -26,4 +26,26 @@ public class ReservationMapper {
                 .operatingAirlines(p.getOperatingAirlines())
                 .build();
     }
+    public static ReservationDTO toUpdate(Reservation p) {
+        return ReservationDTO.builder()
+                .id(p.getId())
+                .departureCity(p.getDepartureCity())
+                .arrivalCity(p.getArrivalCity())
+                .flightNumber(p.getFlightNumber())
+                .dateOfDeparture(p.getDateOfDeparture())
+                .estimatedDepartureTime(p.getEstimatedDepartureTime())
+                .operatingAirlines(p.getOperatingAirlines())
+                .build();
+    }
+    public static Reservation buildUpdateReservation(ReservationDTO p) {
+        return Reservation.builder()
+                .id(p.getId())
+                .departureCity(p.getDepartureCity())
+                .arrivalCity(p.getArrivalCity())
+                .flightNumber(p.getFlightNumber())
+                .dateOfDeparture(p.getDateOfDeparture())
+                .estimatedDepartureTime(p.getEstimatedDepartureTime())
+                .operatingAirlines(p.getOperatingAirlines())
+                .build();
+    }
 }

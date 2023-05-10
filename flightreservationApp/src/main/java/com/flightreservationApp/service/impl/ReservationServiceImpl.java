@@ -1,15 +1,17 @@
 package com.flightreservationApp.service.impl;
 
-import com.flightreservationApp.dto.passenger.PassengerDTO;
 import com.flightreservationApp.dto.reservation.ReservationDTO;
+import com.flightreservationApp.entity.Passenger;
 import com.flightreservationApp.entity.Reservation;
+import com.flightreservationApp.exceptions.ResourceNotFountException;
+import com.flightreservationApp.mapper.PassengerMapper;
+import com.flightreservationApp.mapper.ReservationMapper;
 import com.flightreservationApp.repository.ReservationRepository;
 import com.flightreservationApp.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ReservationServiceImpl implements ReservationService {
@@ -19,21 +21,43 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public ReservationDTO createReservation(ReservationDTO reservationDTO) {
-        return null;
+        if (reservationDTO == null) {
+            throw new IllegalArgumentException("ReservationDTO cannot be null");
+        }
+        if (reservationDTO.getDateOfDeparture() == null) {
+            throw new IllegalArgumentException("Reservation dates cannot be null");
+        }
+
+        // Create new Reservation object from ReservationDTO using mapper
+        Reservation reservation = ReservationMapper.toEntity(reservationDTO);
+
+        // Persist Reservation object to database
+        Reservation savedReservation = reservationRepository.save(reservation);
+
+        // Create and return new ReservationDTO object from saved Reservation using mapper
+        ReservationDTO savedReservationDTO = ReservationMapper.toDto(savedReservation);
+        return savedReservationDTO;
     }
 
     public Reservation getReservationById(Integer id) {
-        return reservationRepository.findById(id).orElse(null);
+        return reservationRepository.findById(id)
+                .orElseThrow(()->new ResourceNotFountException(String
+                        .format("reservation with id%s not found" , id)));
     }
 
     @Override
-    public void cancelReservation(ReservationDTO reservationDTO) {
-
+    public void deleteReservation(Integer id) {
+        Reservation r = reservationRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFountException(
+                        String.format("passenger with id %s not found",id)));
+        reservationRepository.delete(r);
     }
 
     @Override
-    public ReservationDTO updateReservation(ReservationDTO reservationDTO, List<PassengerDTO> passengers) {
-        return null;
+    public ReservationDTO updateReservation(Integer id, ReservationDTO reservationDTO) {
+        Reservation reservation = getReservationById(id);
+        reservation = ReservationMapper.buildUpdateReservation(reservationDTO);
+        return ReservationMapper.toUpdate(reservationRepository.save(reservation));
     }
 
 }
