@@ -4,7 +4,7 @@ import com.flightreservationApp.dto.passenger.PassengerDTO;
 import com.flightreservationApp.entity.Passenger;
 
 public class PassengerMapper {
-    public static PassengerDTO toEntity(Passenger r){
+    public static PassengerDTO toDTO(Passenger r){
         return PassengerDTO.builder()
                 .id(r.getId())
                 .passenger(r.getPassenger())
@@ -23,5 +23,18 @@ public class PassengerMapper {
                 .build();
 
     }
-
+    public static PassengerDTO toUpdateDto(Passenger p){
+        return PassengerDTO.builder()
+                .id(p.getId())
+                .name(p.getName())
+                .surname(p.getSurname())
+                .build();
+    }
+    public static Passenger buildUpdatePassenger(Passenger p , PassengerDTO req){
+        return Passenger.builder()
+                .id(p.getId())
+                .name(p.getName())
+                .surname(p.getSurname())
+                .build();
+    }
 }

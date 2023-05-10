@@ -16,6 +16,8 @@ import java.util.Date;
 @Builder
 public class PassengerDTO {
     private Integer id;
+    private String name;
+    private String surname;
     private boolean checkedIn;
     private Integer numberOfBags;
     private Passenger passenger;

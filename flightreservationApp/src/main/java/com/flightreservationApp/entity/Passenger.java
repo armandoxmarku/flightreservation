@@ -17,6 +17,8 @@ public class Passenger {
     @Id
     @GeneratedValue
     private Integer id;
+    private String name;
+    private String surname;
     private boolean checkedIn;
     private Integer numberOfBags;
     @OneToOne
