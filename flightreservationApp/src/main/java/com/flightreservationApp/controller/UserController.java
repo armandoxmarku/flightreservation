@@ -19,7 +19,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @RolesAllowed("ADMIN")
+
     @PostMapping("/admin/{userRole}")
     public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO req, @PathVariable String userRole){
         UserDTO dto = userService.registerUser(req,userRole);

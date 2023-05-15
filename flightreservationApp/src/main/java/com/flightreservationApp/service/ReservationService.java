@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 public interface ReservationService {
     public ReservationDTO createReservation(ReservationDTO reservationDTO);
     public Reservation getReservationById(Integer id);
-    public void deleteReservation(Integer id);
+    Void deleteReservationById(Integer id);
     public ReservationDTO updateReservation(Integer id ,ReservationDTO reservationDTO);
 }

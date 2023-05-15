@@ -18,7 +18,7 @@ public class FlightController {
     private final FlightService flightService;
 
     @RolesAllowed("ADMIN")
-    @PostMapping("/flights/{id}")
+    @PostMapping("/addflights/{id}")
     public ResponseEntity<FlightDTO> addFlight(@PathVariable Integer id, @RequestBody FlightDTO flightDTO) {
         return ResponseEntity.ok(flightService.addFlight(id, flightDTO));
     }

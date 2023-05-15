@@ -48,7 +48,7 @@ public class AuthController {
                     authenticationManager.authenticate(
                             new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-            String subject = (String) authentication.getPrincipal();
+            User user = (User) authentication.getPrincipal();
 
             Instant now = Instant.now();
             Long expiry = 36000L;
@@ -63,8 +63,9 @@ public class AuthController {
                             .issuer("ikubinfo.al")
                             .issuedAt(now)
                             .expiresAt(now.plusSeconds(expiry))
-                            .subject(subject)
+                            .subject(user.getUsername())
                             .claim("roles", scope)
+                            .audience(Arrays.asList("Audienca"))
                             .build();
 
             String token = this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

@@ -1,10 +1,8 @@
 package com.flightreservationApp.service.impl;
 
 import com.flightreservationApp.dto.reservation.ReservationDTO;
-import com.flightreservationApp.entity.Passenger;
 import com.flightreservationApp.entity.Reservation;
 import com.flightreservationApp.exceptions.ResourceNotFountException;
-import com.flightreservationApp.mapper.PassengerMapper;
 import com.flightreservationApp.mapper.ReservationMapper;
 import com.flightreservationApp.repository.ReservationRepository;
 import com.flightreservationApp.service.ReservationService;
@@ -46,16 +44,18 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void deleteReservation(Integer id) {
+    public Void deleteReservationById(Integer id) {
         Reservation r = reservationRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFountException(
                         String.format("passenger with id %s not found",id)));
         reservationRepository.delete(r);
+
+        return null;
     }
 
     @Override
     public ReservationDTO updateReservation(Integer id, ReservationDTO reservationDTO) {
-        Reservation reservation = getReservationById(id);
+        Reservation reservation = reservationRepository.findById(id).get();
         reservation = ReservationMapper.buildUpdateReservation(reservationDTO);
         return ReservationMapper.toUpdate(reservationRepository.save(reservation));
     }
