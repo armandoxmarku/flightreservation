@@ -27,7 +27,7 @@ public class ReservationController {
 
     }
     @RolesAllowed("ADMIN")
-    @DeleteMapping("/delete/{id")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void>deleteReservationbyid(@PathVariable Integer id){
         return ResponseEntity.ok(reservationService.deleteReservationById(id));
     }
