@@ -31,7 +31,7 @@ public class ReservationController {
     public ResponseEntity<Void>deleteReservationbyid(@PathVariable Integer id){
         return ResponseEntity.ok(reservationService.deleteReservationById(id));
     }
-
+    @RolesAllowed("ADMIN")
     @PutMapping("/update/{id}")
     public ResponseEntity<ReservationDTO> updateReservation(@PathVariable Integer id ,
                                                             @RequestBody ReservationDTO reservationDTO) {

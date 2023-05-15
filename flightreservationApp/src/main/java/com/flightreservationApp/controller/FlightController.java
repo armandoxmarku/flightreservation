@@ -32,6 +32,7 @@ public class FlightController {
         return ResponseEntity.ok(flightService.findall());
 
     }
+    @RolesAllowed("ADMIN")
     @GetMapping("/flight/{flightId}")
     public ResponseEntity<FlightDTO> getFlightById(@PathVariable Integer id){
         return ResponseEntity.ok(flightService.getFlightById(id));
