@@ -1,4 +1,4 @@
-package com.flightreservationApp.dto.auth;
+package com.flightreservationApp.controller;
 
 import com.flightreservationApp.dto.auth.AuthRequest;
 import com.flightreservationApp.dto.auth.TokenDTO;
